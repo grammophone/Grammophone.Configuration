@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xaml;
 
-namespace Gramma.Configuration
+namespace Grammophone.Configuration
 {
 	/// <summary>
 	/// Loader of a settinigs instance persisted in XAML.

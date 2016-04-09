@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Gramma.Configuration
+namespace Grammophone.Configuration
 {
 	/// <summary>
 	/// Base class for elements contained in <see cref="NamedElementsCollection{E}"/>.

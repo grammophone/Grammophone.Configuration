@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Gramma.Configuration
+namespace Grammophone.Configuration
 {
 	/// <summary>
 	/// Exception for config or XAML file errors.
