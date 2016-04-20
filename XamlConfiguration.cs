@@ -73,7 +73,17 @@ namespace Grammophone.Configuration
 				throw new ConfigurationException(
 					$"No configuration section having name '{configurationSectionName}' doesn't implement IXamlSettingsSection.");
 
-			using (var reader = new XamlXmlReader(xamlSettingsSection.SettingsXamlPath))
+			string settingsPath = xamlSettingsSection.SettingsXamlPath;
+
+			// Is this an absolute or a relative path?
+			if (!System.IO.Path.IsPathRooted(settingsPath))
+			{
+				// If not, translate it according to the AppDomain's base. 
+				// This is required for web applications, otherwise a relative path would be OK.
+				settingsPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, settingsPath);
+			}
+
+			using (var reader = new XamlXmlReader(settingsPath))
 			{
 				var settings = XamlServices.Load(reader) as T;
 
