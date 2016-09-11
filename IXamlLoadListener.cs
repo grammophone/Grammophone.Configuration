@@ -15,6 +15,11 @@ namespace Grammophone.Configuration
 		/// <summary>
 		/// Called after XAML deserialization.
 		/// </summary>
+		/// <param name="sender">
+		/// The <see cref="XamlConfiguration{T}"/> if loaded through <see cref="XamlConfiguration{T}.Settings"/>,
+		/// else it is user-defined when loaded via <see cref="XamlConfiguration{T}.LoadSettings(string, object)"/>.
+		/// In the latter case, it can be null.
+		/// </param>
 		void OnPostLoad(object sender);
 	}
 }

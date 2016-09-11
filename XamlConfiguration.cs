@@ -8,7 +8,10 @@ using System.Xaml;
 namespace Grammophone.Configuration
 {
 	/// <summary>
-	/// Loader of a settinigs instance persisted in XAML.
+	/// Loader of a settings instance persisted in XAML. As an instance, it uses
+	/// a specified <see cref="IXamlSettingsSection"/> to locate the XAML file,
+	/// but also offers the static <see cref="LoadSettings(string, object)"/> method to load
+	/// an arbitrary XAML file.
 	/// </summary>
 	/// <typeparam name="T">The type of the settings instance in the XAML.</typeparam>
 	public class XamlConfiguration<T>
@@ -57,6 +60,50 @@ namespace Grammophone.Configuration
 
 		#endregion
 
+		#region Public methods
+
+		/// <summary>
+		/// Load and parse an arbitrary XAML file into an instance of <typeparamref name="T"/>.
+		/// </summary>
+		/// <param name="xamlFilename">The XAML filename.</param>
+		/// <param name="postLoadEventSender">
+		/// The optional user-specified sender to be supplied when <typeparamref name="T"/>
+		/// implements the <see cref="IXamlLoadListener"/> interface.
+		/// </param>
+		/// <returns>Returns the instance of type <typeparamref name="T"/>.</returns>
+		/// <exception cref="ConfigurationException">
+		/// Thrown when the XAML file does not specify a descendant of <typeparamref name="T"/>.
+		/// </exception>
+		public static T LoadSettings(string xamlFilename, object postLoadEventSender = null)
+		{
+			if (xamlFilename == null) throw new ArgumentNullException(nameof(xamlFilename));
+
+			// Is this an absolute or a relative path?
+			if (!System.IO.Path.IsPathRooted(xamlFilename))
+			{
+				// If not, translate it according to the AppDomain's base. 
+				// This is required for web applications, otherwise a relative path would be OK.
+				xamlFilename = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, xamlFilename);
+			}
+
+			using (var reader = new XamlXmlReader(xamlFilename))
+			{
+				var settings = XamlServices.Load(reader) as T;
+
+				if (settings == null)
+					throw new ConfigurationException(
+						$"The instance specified in the XAML file is not of type '{typeof(T).FullName}'.");
+
+				var xamlLoadListener = settings as IXamlLoadListener;
+
+				if (xamlLoadListener != null) xamlLoadListener.OnPostLoad(postLoadEventSender);
+
+				return settings;
+			}
+		}
+
+		#endregion
+
 		#region Private methods
 
 		private T LoadSettings()
@@ -75,29 +122,7 @@ namespace Grammophone.Configuration
 
 			string settingsPath = xamlSettingsSection.SettingsXamlPath;
 
-			// Is this an absolute or a relative path?
-			if (!System.IO.Path.IsPathRooted(settingsPath))
-			{
-				// If not, translate it according to the AppDomain's base. 
-				// This is required for web applications, otherwise a relative path would be OK.
-				settingsPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, settingsPath);
-			}
-
-			using (var reader = new XamlXmlReader(settingsPath))
-			{
-				var settings = XamlServices.Load(reader) as T;
-
-				if (settings == null)
-					throw new ConfigurationException(
-						$"The instance specified in the XAML file is not of type '{typeof(T).FullName}'.");
-
-				var xamlLoadListener = settings as IXamlLoadListener;
-
-				if (xamlLoadListener != null) xamlLoadListener.OnPostLoad(this);
-
-				return settings;
-			}
-
+			return LoadSettings(settingsPath, this);
 		}
 
 		#endregion
