@@ -118,7 +118,7 @@ namespace Grammophone.Configuration
 
 			if (xamlSettingsSection == null)
 				throw new ConfigurationException(
-					$"No configuration section having name '{configurationSectionName}' doesn't implement IXamlSettingsSection.");
+					$"The configuration section having name '{configurationSectionName}' doesn't implement IXamlSettingsSection.");
 
 			string settingsPath = xamlSettingsSection.SettingsXamlPath;
 
