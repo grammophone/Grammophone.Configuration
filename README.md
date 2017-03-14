@@ -9,4 +9,6 @@ In order to use the system to provide an instance of settings type `T`, add a co
 
 In case where any post-deserialization actions are required on the instance of type `T`, the type can implement the `IXamlLoadListener` interface to have its `OnPostLoad` method called after deserialization.
 
+When such a XAML file is included in a Visual Studio project, make sure that you set its "Build Action" to "None" in its properties. You would probably also set the "Copy to Output Directory" property to "Copy if newer". If you use [XAML 2009 features](https://msdn.microsoft.com/en-us/library/ee792007(v=vs.110).aspx), in order to get Intellisense support for them, add the System.Xaml assembly to the project's references. This assembly is also referenced by this library.
+
 This library has no dependencies.
