@@ -78,14 +78,36 @@ namespace Grammophone.Configuration
 		{
 			if (xamlFilename == null) throw new ArgumentNullException(nameof(xamlFilename));
 
+			string effectiveFilePath = xamlFilename;
+
 			// Is this an absolute or a relative path?
 			if (!System.IO.Path.IsPathRooted(xamlFilename))
 			{
-				// If not, translate it according to the AppDomain's base. 
+				// If not, translate it according to the AppDomain's binaries. 
 				// This is required for web applications, otherwise a relative path would be OK.
-				xamlFilename = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, xamlFilename);
+				effectiveFilePath = System.IO.Path.Combine(AppDomain.CurrentDomain.RelativeSearchPath, xamlFilename);
+
+				try
+				{
+					// First try with the binaries directory.
+					return LoadSettingsFromAbsolutePath(effectiveFilePath, postLoadEventSender);
+				}
+				catch	(System.IO.FileNotFoundException ex)
+				{
+					// If the binaries directory and the AppDomain's base directory are not the same,
+					// try with the base directory now.
+					if (AppDomain.CurrentDomain.BaseDirectory == AppDomain.CurrentDomain.RelativeSearchPath)
+						throw ex;
+
+					effectiveFilePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, xamlFilename);
+				}
 			}
 
+			return LoadSettingsFromAbsolutePath(effectiveFilePath, postLoadEventSender);
+		}
+
+		private static T LoadSettingsFromAbsolutePath(string xamlFilename, object postLoadEventSender)
+		{
 			using (var reader = new XamlXmlReader(xamlFilename))
 			{
 				var settings = XamlServices.Load(reader) as T;
