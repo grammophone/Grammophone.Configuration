@@ -83,24 +83,27 @@ namespace Grammophone.Configuration
 			// Is this an absolute or a relative path?
 			if (!System.IO.Path.IsPathRooted(xamlFilename))
 			{
-				// If not, translate it according to the AppDomain's binaries. 
-				// This is required for web applications, otherwise a relative path would be OK.
-				effectiveFilePath = System.IO.Path.Combine(AppDomain.CurrentDomain.RelativeSearchPath, xamlFilename);
-
-				try
+				if (AppDomain.CurrentDomain.RelativeSearchPath != null)
 				{
-					// First try with the binaries directory.
-					return LoadSettingsFromAbsolutePath(effectiveFilePath, postLoadEventSender);
-				}
-				catch	(System.IO.FileNotFoundException ex)
-				{
-					// If the binaries directory and the AppDomain's base directory are not the same,
-					// try with the base directory now.
-					if (AppDomain.CurrentDomain.BaseDirectory == AppDomain.CurrentDomain.RelativeSearchPath)
-						throw ex;
+					// If not, translate it according to the AppDomain's binaries.
+					// This is required for web applications, otherwise a relative path would be OK.
+					effectiveFilePath = System.IO.Path.Combine(AppDomain.CurrentDomain.RelativeSearchPath, xamlFilename);
 
-					effectiveFilePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, xamlFilename);
+					try
+					{
+						// First try with the binaries directory.
+						return LoadSettingsFromAbsolutePath(effectiveFilePath, postLoadEventSender);
+					}
+					catch (System.IO.FileNotFoundException ex)
+					{
+						// If the binaries directory and the AppDomain's base directory are not the same,
+						// try with the base directory now.
+						if (AppDomain.CurrentDomain.BaseDirectory == AppDomain.CurrentDomain.RelativeSearchPath)
+							throw ex;
+					}
 				}
+
+				effectiveFilePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, xamlFilename);
 			}
 
 			return LoadSettingsFromAbsolutePath(effectiveFilePath, postLoadEventSender);
