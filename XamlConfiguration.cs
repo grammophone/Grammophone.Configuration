@@ -101,6 +101,13 @@ namespace Grammophone.Configuration
 						if (AppDomain.CurrentDomain.BaseDirectory == AppDomain.CurrentDomain.RelativeSearchPath)
 							throw ex;
 					}
+					catch (System.IO.DirectoryNotFoundException ex)
+					{
+						// If the binaries directory and the AppDomain's base directory are not the same,
+						// try with the base directory now.
+						if (AppDomain.CurrentDomain.BaseDirectory == AppDomain.CurrentDomain.RelativeSearchPath)
+							throw ex;
+					}
 				}
 
 				effectiveFilePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, xamlFilename);
