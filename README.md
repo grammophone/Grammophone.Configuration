@@ -7,8 +7,8 @@ Of course, this is not a replacement for a general purpose dependency injection 
 
 There are two ways to use the library:
 
-1. Direct construction of an instance of type `T`: Call `XamlConfiguration<T>.LoadSettings(xamlFilename)` to create an instance of `T` defined in a XAML file or a `ConfigurationException` will be thrown.
-2. Factory of an instance of type `T`: Add a configuration element in the application's .config file of type `XamlSettingsSection` using the standard .NET way. Set its `settingsXamlPath` to a relative or absolute path of a XAML file describing the instance of type `T`. Then create a singleton of type `XamlConfiguration<T>`, passing the `name` of the `XamlSettingsSection` element in the application's standard config file. The instance of type `T` will be available via property `XamlConfiguration<T>.Settings` or a `ConfigurationException` will be thrown.
+1. Direct construction of an instance of type `T`: Call `XamlConfiguration<T>.LoadSettings(xamlFilename)` to create an instance of `T` defined in a XAML file describing the instance of `T`, specified with an absolute path or relative to the application. Failure throws a `ConfigurationException`.
+2. Factory of an instance of type `T`: Add a configuration element in the application's .config file of type `XamlSettingsSection` using the standard .NET way. Set its `settingsXamlPath` to an absolute or relative to the application path of a XAML file describing the instance of type `T`. Then create a singleton of type `XamlConfiguration<T>`, passing the `name` of the `XamlSettingsSection` element in the application's standard config file. The instance of type `T` will be available via property `XamlConfiguration<T>.Settings`. Failure throws a `ConfigurationException`.
 
 In case where any post-deserialization actions are required on the instance of type `T`, the type can implement the `IXamlLoadListener` interface to have its `OnPostLoad` method called after deserialization.
 
