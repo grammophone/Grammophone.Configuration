@@ -5,7 +5,10 @@ The reason behind using XAML for configuration purposes is that XAML files can r
 
 Of course, this is not a replacement for a general purpose dependency injection system. For example, only the singleton instantiation mode is supported (that's why the project is aimed at application configuration).
 
-In order to use the system to provide an instance of settings type `T`, add a configuration element in the application's config file of type `XamlSettingsSection` using the standard .NET way and set its `settingsXamlPath` to a XAML filename describing the instance of type `T`. Then create a singleton of type `XamlConfiguration<T>`, passing the name of the `XamlSettingsSection` element in the application's standard config file. The instance of type `T` will be available via property `XamlConfiguration<T>.Settings` or a `ConfigurationException` will be thrown.
+There are two ways to use the library:
+
+1. Direct: Call `XamlConfiguration<T>.LoadSettings(xamlFilename` to create an instance of `T` defined in a XAML file or a `ConfigurationException` will be thrown.
+2. Factory of a `T` instance: Add a configuration element in the application's config file of type `XamlSettingsSection` using the standard .NET way. Set its `settingsXamlPath` to a XAML filename describing the instance of type `T`. Then create a singleton of type `XamlConfiguration<T>`, passing the `name` of the `XamlSettingsSection` element in the application's standard config file. The instance of type `T` will be available via property `XamlConfiguration<T>.Settings` or a `ConfigurationException` will be thrown.
 
 In case where any post-deserialization actions are required on the instance of type `T`, the type can implement the `IXamlLoadListener` interface to have its `OnPostLoad` method called after deserialization.
 
