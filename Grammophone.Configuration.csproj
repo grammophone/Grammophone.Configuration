@@ -5,8 +5,7 @@
     <AssemblyTitle>Grammophone.Configuration</AssemblyTitle>
     <Product>Grammophone.Configuration</Product>
     <Copyright>Copyright ©  2016</Copyright>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
-    <DocumentationFile>bin\$(Configuration)\Grammophone.Configuration.XML</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Grammophone.Configuration.XML</DocumentationFile>
 		<UseWpf>true</UseWpf>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
