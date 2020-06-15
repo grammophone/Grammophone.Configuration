@@ -89,24 +89,9 @@ namespace Grammophone.Configuration
 					// This is required for web applications, otherwise a relative path would be OK.
 					effectiveFilePath = System.IO.Path.Combine(AppDomain.CurrentDomain.RelativeSearchPath, xamlFilename);
 
-					try
+					if (System.IO.File.Exists(effectiveFilePath))
 					{
-						// First try with the binaries directory.
 						return LoadSettingsFromAbsolutePath(effectiveFilePath, postLoadEventSender);
-					}
-					catch (System.IO.FileNotFoundException ex)
-					{
-						// If the binaries directory and the AppDomain's base directory are not the same,
-						// try with the base directory now.
-						if (AppDomain.CurrentDomain.BaseDirectory == AppDomain.CurrentDomain.RelativeSearchPath)
-							throw ex;
-					}
-					catch (System.IO.DirectoryNotFoundException ex)
-					{
-						// If the binaries directory and the AppDomain's base directory are not the same,
-						// try with the base directory now.
-						if (AppDomain.CurrentDomain.BaseDirectory == AppDomain.CurrentDomain.RelativeSearchPath)
-							throw ex;
 					}
 				}
 
