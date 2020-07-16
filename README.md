@@ -1,5 +1,5 @@
 # Grammophone.Configuration
-This .NET library facilitates configuration files written in XAML.
+This dual-target .NET Framework and .NET Core 3.1 library facilitates configuration files written in XAML.
 
 The reason behind using XAML for configuration purposes is that XAML files can represent class instantiations in a lot more concise and less noisy way than traditional dependency injection frameworks like Spring or Unity. The latter systems typically clutter XML files with 'bean', 'constructor', 'param', 'property' elements and the like. On the other hand, XAML maps classes to elements and attributes, defining an XML schema from the object model directly, which IDE's like Visual Studio understand providing context-sensitive intellisense. The result is easy to read and maintain configuration files, especially when an application needs a lot of complex settings and not just some property values.
 
