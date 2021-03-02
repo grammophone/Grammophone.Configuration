@@ -1,12 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectGuid>{0F7811FD-6162-4813-9C55-6C43E67308B0}</ProjectGuid>
-    <TargetFrameworks>net472;netcoreapp3.1;</TargetFrameworks>
+    <TargetFrameworks>net472;net5.0;</TargetFrameworks>
     <AssemblyTitle>Grammophone.Configuration</AssemblyTitle>
     <Product>Grammophone.Configuration</Product>
     <Copyright>Copyright ©  2016</Copyright>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Grammophone.Configuration.XML</DocumentationFile>
-		<UseWpf>true</UseWpf>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -20,5 +19,6 @@
 	</ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
+		<PackageReference Include="Portable.Xaml" Version="0.26.0" />
   </ItemGroup>
 </Project>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Xaml.Schema;
+using Portable.Xaml.Schema;
 using System.Reflection;
 
 namespace Grammophone.Configuration.ReadOnlyModels
